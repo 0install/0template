@@ -1,0 +1,38 @@
+<?xml version="1.0" ?>
+<interface xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
+  <name>myprog</name>
+  <summary>does useful stuff</summary>
+
+  <!-- Optional fields
+  <description>
+    A longer description goes here.
+
+    You can include multiple paragraphs too.
+  </description>
+
+  <homepage>http://example.com/myprog.html</homepage>
+
+  <feed-for interface="http://example.com/0install/myprog.xml"/>
+  -->
+
+  <group>
+    <command name="run" path="myprog.py">
+      <runner interface="http://repo.roscidus.com/python/python">
+	<version not-before="3"/>
+      </runner>
+    </command><command name="compile" shell-command='"$SRCDIR/configure" --prefix="$DISTDIR" &amp;&amp; make install'>
+      <compile:implementation xmlns:compile="http://zero-install.sourceforge.net/2006/namespaces/0compile">
+	<command name="run" path="bin/myprog"/>
+      </compile:implementation>
+    </command>
+
+    <!-- Add additional requirements here.
+    <requires interface="..."/>
+    -->
+
+    <implementation id='.' local-path='.' version='0.1-pre'/><implementation version='{version}'>
+      <manifest-digest/>
+      <archive href='http://example.com/downloads/myprog-{version}.zip'/>
+    </implementation>
+  </group>
+</interface>

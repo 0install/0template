@@ -23,7 +23,7 @@ config = load_config()
 
 parser = argparse.ArgumentParser(description='Fill in a 0install feed template.')
 parser.add_argument('template', help='the template file to process')
-parser.add_argument('substitutions', metavar='name=value', help='values to insert', nargs='+')
+parser.add_argument('substitutions', metavar='name=value', help='values to insert', nargs='*')
 
 args = parser.parse_args()
 
@@ -32,6 +32,12 @@ def die(msg):
 	sys.exit(1)
 
 template = args.template
+
+if not os.path.exists(template):
+	import create
+	create.create(args)
+	sys.exit(0)
+
 if not template.endswith('.template'):
 	die("Template must be named *.template, not {template}".format(template = template))
 output_file = template[:-9]
