@@ -13,6 +13,10 @@ from zeroinstall import support
 from zeroinstall.injector import namespaces
 from zeroinstall.injector.config import load_config
 
+def die(msg):
+	print(msg, file=sys.stderr)
+	sys.exit(1)
+
 import expand
 import unpack
 import digest
@@ -26,10 +30,6 @@ parser.add_argument('template', help='the template file to process')
 parser.add_argument('substitutions', metavar='name=value', help='values to insert', nargs='*')
 
 args = parser.parse_args()
-
-def die(msg):
-	print(msg, file=sys.stderr)
-	sys.exit(1)
 
 template = args.template
 

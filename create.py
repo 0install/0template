@@ -39,9 +39,9 @@ def create(options):
 	else:
 		die("'{template}' does not end with .xml.template or .xml".format(template = template))
 	
-	print("'{template}' does not exist; creating new template.\n".format(template = template))
+	print("'{template}' does not exist; creating new template.".format(template = template))
 	if not remote:
-		print("As it ends with .xml, not .xml.template, I assume you want a feed for\n"
+		print("\nAs it ends with .xml, not .xml.template, I assume you want a feed for\n"
 		      "a local project (e.g. a Git checkout). If you want a template for\n"
 		      "publishing existing releases, use {template}.template instead.".format(
 			      template = template))

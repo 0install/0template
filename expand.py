@@ -3,6 +3,8 @@ import argparse
 import sys
 import string
 
+from __main__ import die
+
 formatter = string.Formatter()
 
 class UsedDict:
@@ -29,8 +31,8 @@ def process_doc(doc, env):
 		try:
 			return formatter.vformat(template_string, [], wrapped_env)
 		except KeyError as ex:
-			raise KeyError("{ex} while expanding '{template}'".format(
-				ex = repr(ex), template = template_string))
+			die("Missing value for {name} in '{template}'".format(
+				name = str(ex), template = template_string))
 
 	def process(elem):
 		for name, value in elem.attributes.items():
