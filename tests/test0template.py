@@ -55,8 +55,8 @@ class Test0Template(unittest.TestCase):
 		test_create("binary.xml.template", "2\n")
 		shutil.copyfile(os.path.join(mydir, "myprog-1.0.zip"), "myprog-1.0.zip")
 		out = subprocess.check_output(["0template", "binary.xml.template", "version=1.0"], universal_newlines = True)
-		self.assertEqual("Writing binary.xml\n", out)
-		with open("binary.xml", "rb") as stream:
+		self.assertEqual("Writing binary-1.0.xml\n", out)
+		with open("binary-1.0.xml", "rb") as stream:
 			feed = model.ZeroInstallFeed(qdom.parse(stream), local_path = os.path.abspath("."))
 		impl, = feed.implementations.values()
 		self.assertEqual('sha1new=67ba178ed33b292efa5ab364d01a8fc13fe9eba3', impl.id)
@@ -67,8 +67,8 @@ class Test0Template(unittest.TestCase):
 		test_create("source.xml.template", "1\n")
 		shutil.copyfile(os.path.join(mydir, "myprog-1.0.zip"), "myprog-1.0.zip")
 		out = subprocess.check_output(["0template", "source.xml.template", "version=1.0"], universal_newlines = True)
-		self.assertEqual("Writing source.xml\n", out)
-		with open("source.xml", "rb") as stream:
+		self.assertEqual("Writing source-1.0.xml\n", out)
+		with open("source-1.0.xml", "rb") as stream:
 			feed = model.ZeroInstallFeed(qdom.parse(stream), local_path = os.path.abspath("."))
 		impl, = feed.implementations.values()
 		self.assertEqual('sha1new=67ba178ed33b292efa5ab364d01a8fc13fe9eba3', impl.id)

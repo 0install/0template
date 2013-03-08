@@ -38,9 +38,9 @@ if not os.path.exists(template):
 	create.create(args)
 	sys.exit(0)
 
-if not template.endswith('.template'):
-	die("Template must be named *.template, not {template}".format(template = template))
-output_file = template[:-9]
+if not template.endswith('.xml.template'):
+	die("Template must be named *.xml.template, not {template}".format(template = template))
+output_file_stem = template[:-13]
 
 env = {}
 for subst in args.substitutions:
@@ -57,7 +57,7 @@ doc = minidom.parse(args.template)
 # Expand {} template strings
 expand.process_doc(doc, env)
 
-template_dir = os.path.dirname(os.path.abspath(output_file))
+template_dir = os.path.dirname(os.path.abspath(output_file_stem))
 
 # Process archives
 for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'archive'):
@@ -94,6 +94,9 @@ for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, '
 		digest.add_digests(implementation, unpack_dir, config.stores)
 	finally:
 		support.ro_rmtree(tmpdir)
+
+impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
+output_file = output_file_stem + '-' + impls[0].getAttribute('version') + '.xml'
 
 print("Writing", output_file)
 with open(output_file, 'wt') as stream:
