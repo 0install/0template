@@ -28,10 +28,11 @@ def get_choice(msg, options):
 		print("Invalid choice")
 
 def create(options):
+	template = options.template
+
 	if options.substitutions:
 		die("{template} does not exist".format(template = template))
 
-	template = options.template
 	if template.endswith('.xml.template'):
 		remote = True
 	elif template.endswith('.xml'):
@@ -58,6 +59,10 @@ def create(options):
 
 	commands = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'command')
 	commands[0].parentNode.removeChild(commands[choice - 1])
+
+	if choice == 1:
+		impl, = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
+		impl.setAttribute('arch', '*-src')
 
 	assert not os.path.exists(template), template
 	print("\nWriting", template)
