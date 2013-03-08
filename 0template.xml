@@ -21,7 +21,7 @@
       <runner interface="http://repo.roscidus.com/python/python"/>
     </command>
 
-    <command name="test" path="test0template.py">
+    <command name="test" path="tests/test0template.py">
       <runner interface="http://repo.roscidus.com/python/python"/>
       <executable-in-path name='0template'/>
     </command>
