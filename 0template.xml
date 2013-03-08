@@ -18,14 +18,23 @@
 
   <group>
     <command name="run" path="0template.py">
-      <runner interface="http://repo.roscidus.com/python/python">
-	<version not-before="3"/>
-      </runner>
+      <runner interface="http://repo.roscidus.com/python/python"/>
     </command>
+
+    <command name="test" path="test0template.py">
+      <runner interface="http://repo.roscidus.com/python/python"/>
+      <executable-in-path name='0template'/>
+    </command>
+
+    <requires interface="http://repo.roscidus.com/python/python">
+      <version not-before="3"/>
+    </requires>
+
     <requires interface="http://0install.net/2007/interfaces/ZeroInstall.xml">
       <environment insert="" mode="prepend" name="PYTHONPATH"/>
       <version not-before='2.0'/>
     </requires>
+
     <implementation id="." version="0.1-pre"/>
   </group>
 </interface>
