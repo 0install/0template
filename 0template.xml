@@ -16,7 +16,7 @@
 
   <feed-for interface="http://0install.net/tools/0template.xml"/>
 
-  <group>
+  <group license="OSI Approved :: GNU Lesser General Public License (LGPL)">
     <command name="run" path="0template.py">
       <runner interface="http://repo.roscidus.com/python/python"/>
     </command>
