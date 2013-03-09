@@ -1,13 +1,19 @@
 # Copyright (C) 2013, Thomas Leonard
 # See the README file for details, or visit http://0install.net.
 
+from __future__ import print_function
+
 from xml.dom import minidom, Node
 import argparse
 import os
 import sys
 import string
 import shutil
-from urllib import request
+
+if sys.version_info[0] >= 3:
+	from urllib import request
+else:
+	import urllib as request
 
 from zeroinstall import support
 from zeroinstall.injector import namespaces

@@ -27,7 +27,7 @@
     </command>
 
     <requires interface="http://repo.roscidus.com/python/python">
-      <version not-before="3"/>
+      <version not-before="2.7"/>
     </requires>
 
     <requires interface="http://0install.net/2007/interfaces/ZeroInstall.xml">

@@ -17,6 +17,7 @@ def test_create(name, stdin):
 			stderr = subprocess.STDOUT,
 			universal_newlines = True)
 	out, unused = child.communicate(stdin)
+	assert 'Writing ' + name in out, out
 	retval = child.wait()
 	assert retval == 0
 
