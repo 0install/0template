@@ -1,4 +1,5 @@
 <?xml version="1.0" ?>
+<?xml-stylesheet type='text/xsl' href='interface.xsl'?>
 <interface xmlns="http://zero-install.sourceforge.net/2004/injector/interface">
   <name>0template</name>
   <summary>utility to make creating feeds easier</summary>
@@ -23,7 +24,7 @@
 
     <command name="test" path="tests/test0template.py">
       <runner interface="http://repo.roscidus.com/python/python"/>
-      <executable-in-path name='0template'/>
+      <executable-in-path name="0template"/>
     </command>
 
     <requires interface="http://repo.roscidus.com/python/python">
@@ -32,9 +33,9 @@
 
     <requires interface="http://0install.net/2007/interfaces/ZeroInstall.xml">
       <environment insert="" mode="prepend" name="PYTHONPATH"/>
-      <version not-before='2.0'/>
+      <version not-before="2.0"/>
     </requires>
 
-    <implementation id="." version="0.1-pre"/>
+    <implementation id="." released="2013-03-09" version="0.1"/>
   </group>
 </interface>
