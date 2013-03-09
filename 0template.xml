@@ -36,6 +36,6 @@
       <version not-before="2.0"/>
     </requires>
 
-    <implementation id="." released="2013-03-09" version="0.1"/>
+    <implementation id="." version="0.1-post"/>
   </group>
 </interface>
