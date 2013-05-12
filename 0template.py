@@ -65,41 +65,46 @@ expand.process_doc(doc, env)
 
 template_dir = os.path.dirname(os.path.abspath(output_file_stem))
 
-# Process archives
-for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'archive'):
-	# Download the archive if missing
-	href = elem.getAttribute('href')
-	assert href, "missing href on <archive>"
-	local_copy = os.path.join(template_dir, os.path.basename(href))
-	if not os.path.exists(local_copy):
-		print("Downloading {href} to {local_copy}".format(**locals()))
-		req = request.urlopen(href)
-		with open(local_copy + '.part', 'wb') as local_stream:
-			shutil.copyfileobj(req, local_stream)
-		support.portable_rename(local_copy + '.part', local_copy)
-		req.close()
+def process_archives(parent):
+	for elem in parent.childNodes:
+		if elem.namespaceURI != namespaces.XMLNS_IFACE: continue
 
-	# Set the size attribute
-	elem.setAttribute('size', str(os.stat(local_copy).st_size))
+		if elem.localName in ('archive', 'file'):
+			# Download the archive if missing
+			href = elem.getAttribute('href')
+			assert href, "missing href on <archive>"
+			local_copy = os.path.join(template_dir, os.path.basename(href))
+			if not os.path.exists(local_copy):
+				print("Downloading {href} to {local_copy}".format(**locals()))
+				req = request.urlopen(href)
+				with open(local_copy + '.part', 'wb') as local_stream:
+					shutil.copyfileobj(req, local_stream)
+				support.portable_rename(local_copy + '.part', local_copy)
+				req.close()
 
-	# Unpack
-	tmpdir = unpack.unpack_to_tmp(href, local_copy, elem.getAttribute('type'))
-	try:
-		unpack_dir = os.path.join(tmpdir, 'unpacked')
+			# Set the size attribute
+			elem.setAttribute('size', str(os.stat(local_copy).st_size))
 
-		# Set the extract attribute
-		extract = elem.getAttribute('extract') or unpack.guess_extract(unpack_dir)
-		if extract:
-			elem.setAttribute('extract', extract)
-			unpack_dir = os.path.join(unpack_dir, extract)
-			assert os.path.isdir(unpack_dir), "Not a directory: {dir}".format(dir = unpack_dir)
+			# Unpack (a rather inefficient way to guess the 'extract' attribute)
+			tmpdir = unpack.unpack_to_tmp(href, local_copy, elem.getAttribute('type'))
+			try:
+				unpack_dir = os.path.join(tmpdir, 'unpacked')
 
-		# Set the ID and fill in <manifest-digests>
-		implementation = elem.parentNode
-		assert implementation.localName == 'implementation', implementation.localName
-		digest.add_digests(implementation, unpack_dir, config.stores)
-	finally:
-		support.ro_rmtree(tmpdir)
+				# Set the extract attribute
+				extract = elem.getAttribute('extract') or unpack.guess_extract(unpack_dir)
+				if extract:
+					elem.setAttribute('extract', extract)
+					unpack_dir = os.path.join(unpack_dir, extract)
+					assert os.path.isdir(unpack_dir), "Not a directory: {dir}".format(dir = unpack_dir)
+			finally:
+				support.ro_rmtree(tmpdir)
+		elif elem.localName == 'recipe':
+			process_archives(elem)
+
+# Process implementations
+for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation'):
+	process_archives(elem)
+	digest.add_digests(args.template, elem, config)
 
 impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
 output_file = output_file_stem + '-' + impls[0].getAttribute('version') + '.xml'
