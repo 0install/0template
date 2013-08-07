@@ -51,7 +51,8 @@ class FakeStores:
 		implementation = self.impl
 
 		sha1new = get_digest(unpack_dir, 'sha1new')
-		implementation.setAttribute('id', sha1new)
+		if not implementation.getAttribute('id'):
+			implementation.setAttribute('id', sha1new)
 		digests = [sha1new]
 
 		def add_digest(alg_name):
