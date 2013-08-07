@@ -34,6 +34,7 @@ config = load_config()
 parser = argparse.ArgumentParser(description='Fill in a 0install feed template.')
 parser.add_argument('template', help='the template file to process')
 parser.add_argument('substitutions', metavar='name=value', help='values to insert', nargs='*')
+parser.add_argument('-o', '--output', help='output filename')
 
 args = parser.parse_args()
 
@@ -114,7 +115,7 @@ for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, '
 	digest.add_digests(args.template, elem, config)
 
 impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
-output_file = output_file_stem + '-' + impls[0].getAttribute('version') + '.xml'
+output_file = args.output if args.output is not None else output_file_stem + '-' + impls[0].getAttribute('version') + '.xml'
 
 print("Writing", output_file)
 with open(output_file, 'wt') as stream:
