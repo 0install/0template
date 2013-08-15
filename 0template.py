@@ -9,6 +9,7 @@ import os
 import sys
 import string
 import shutil
+import time
 
 if sys.version_info[0] >= 3:
 	from urllib import request
@@ -66,6 +67,11 @@ expand.process_doc(doc, env)
 
 template_dir = os.path.dirname(os.path.abspath(output_file_stem))
 
+def process_impl(elem):
+	if not elem.getAttribute("released"):
+		today = time.strftime("%Y-%m-%d")
+		elem.setAttribute("released", today)
+
 def process_archives(parent):
 	for elem in parent.childNodes:
 		if elem.namespaceURI != namespaces.XMLNS_IFACE: continue
@@ -111,6 +117,7 @@ def process_archives(parent):
 
 # Process implementations
 for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation'):
+	process_impl(elem)
 	process_archives(elem)
 	digest.add_digests(args.template, elem, config)
 
