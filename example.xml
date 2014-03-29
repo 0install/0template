@@ -15,7 +15,7 @@
   <feed-for interface="http://example.com/0install/myprog.xml"/>
   -->
 
-  <group>
+  <group license='OSI Approved :: GNU Lesser General Public License (LGPL)'>
     <command name="run" path="myprog.py">
       <runner interface="http://repo.roscidus.com/python/python">
 	<version not-before="3"/>

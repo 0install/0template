@@ -62,9 +62,11 @@ def create(options):
 	commands = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'command')
 	commands[0].parentNode.removeChild(commands[choice - 1])
 
+	impl, = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
 	if choice == 1:
-		impl, = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
 		impl.setAttribute('arch', '*-src')
+	else:
+		impl.setAttribute('arch', '*-*')
 
 	assert not os.path.exists(template), template
 	print("\nWriting", template)
