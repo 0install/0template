@@ -36,6 +36,10 @@
       <version not-before="2.2-post"/>
     </requires>
 
+    <requires interface="http://0install.de/feeds/ZeroInstall_Tools.xml" os="Windows">
+      <executable-in-var name="0TEMPLATE_EXTERNAL_TOOL" command="0publish" />
+    </requires>
+
     <implementation id="." version="0.1-post"/>
   </group>
 </interface>
