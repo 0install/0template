@@ -115,11 +115,14 @@ def process_archives(parent):
 		elif elem.localName == 'recipe':
 			process_archives(elem)
 
+external_tool = os.environ.get('0TEMPLATE_EXTERNAL_TOOL', '')
+
 # Process implementations
 for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation'):
 	process_impl(elem)
-	process_archives(elem)
-	digest.add_digests(args.template, elem, config)
+	if not external_tool:
+		process_archives(elem)
+		digest.add_digests(args.template, elem, config)
 
 def get_version(impl):
     while True:
@@ -136,3 +139,7 @@ with open(output_file, 'wt') as stream:
 	stream.write('<?xml version="1.0"?>\n')
 	doc.documentElement.writexml(stream)
 	stream.write('\n')
+
+if external_tool:
+	import subprocess
+	subprocess.call([external_tool, '--add-missing', output_file])
