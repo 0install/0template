@@ -135,10 +135,10 @@ impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
 output_file = args.output if args.output is not None else output_file_stem + '-' + get_version(impls[0]) + '.xml'
 
 print("Writing", output_file)
-with open(output_file, 'wt') as stream:
-	stream.write('<?xml version="1.0"?>\n')
-	doc.documentElement.writexml(stream)
-	stream.write('\n')
+with open(output_file, 'wb') as stream:
+	stream.write(b'<?xml version="1.0"?>\n')
+	stream.write(doc.documentElement.toxml('utf-8'))
+	stream.write(b'\n')
 
 if external_tool:
 	import subprocess
