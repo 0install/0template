@@ -92,25 +92,26 @@ def process_archives(parent):
 			# Set the size attribute
 			elem.setAttribute('size', str(os.stat(local_copy).st_size))
 
-			if not elem.hasAttribute('extract'):
-				# Unpack (a rather inefficient way to guess the 'extract' attribute)
-				tmpdir = unpack.unpack_to_tmp(href, local_copy, elem.getAttribute('type'))
-				try:
-					unpack_dir = os.path.join(tmpdir, 'unpacked')
+			if elem.localName == 'archive':
+				if not elem.hasAttribute('extract'):
+					# Unpack (a rather inefficient way to guess the 'extract' attribute)
+					tmpdir = unpack.unpack_to_tmp(href, local_copy, elem.getAttribute('type'))
+					try:
+						unpack_dir = os.path.join(tmpdir, 'unpacked')
 
-					# Set the extract attribute
-					extract = unpack.guess_extract(unpack_dir)
-					if extract:
-						elem.setAttribute('extract', extract)
-						unpack_dir = os.path.join(unpack_dir, extract)
-						assert os.path.isdir(unpack_dir), "Not a directory: {dir}".format(dir = unpack_dir)
-				finally:
-					support.ro_rmtree(tmpdir)
-			else:
-				extract = elem.getAttribute('extract')
-				if extract == "":
-					# Remove empty element
-					elem.removeAttribute('extract')
+						# Set the extract attribute
+						extract = unpack.guess_extract(unpack_dir)
+						if extract:
+							elem.setAttribute('extract', extract)
+							unpack_dir = os.path.join(unpack_dir, extract)
+							assert os.path.isdir(unpack_dir), "Not a directory: {dir}".format(dir = unpack_dir)
+					finally:
+						support.ro_rmtree(tmpdir)
+				else:
+					extract = elem.getAttribute('extract')
+					if extract == "":
+						# Remove empty element
+						elem.removeAttribute('extract')
 
 		elif elem.localName == 'recipe':
 			process_archives(elem)
