@@ -143,4 +143,7 @@ with open(output_file, 'wb') as stream:
 
 if external_tool:
 	import subprocess
-	subprocess.call([external_tool, '--add-missing', output_file])
+	external_tool_exit_code = subprocess.call([external_tool, '--add-missing', output_file])
+	if external_tool_exit_code != 0:
+		os.remove(output_file)
+		sys.exit(external_tool_exit_code)
