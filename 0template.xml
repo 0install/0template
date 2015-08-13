@@ -40,6 +40,6 @@
       <executable-in-var command="0publish" name="0TEMPLATE_EXTERNAL_TOOL"/>
     </requires>
 
-    <implementation id="." released="2015-08-13" version="0.3"/>
+    <implementation id="." version="0.3-post"/>
   </group>
 </interface>
