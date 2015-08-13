@@ -28,7 +28,7 @@ import expand
 import unpack
 import digest
 
-version = '0.2'
+version = '0.3'
 
 config = load_config()
 
