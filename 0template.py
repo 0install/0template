@@ -126,11 +126,11 @@ for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, '
 		digest.add_digests(args.template, elem, config)
 
 def get_version(impl):
-    while True:
-        v = impl.getAttribute('version')
-        if v: return v
-        impl = impl.parentNode
-        if not impl or impl.nodeType != Node.ELEMENT_NODE: die("Missing version for implementation")
+	while True:
+		v = impl.getAttribute('version')
+		if v: return v
+		impl = impl.parentNode
+		if not impl or impl.nodeType != Node.ELEMENT_NODE: die("Missing version for implementation")
 
 impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
 output_file = args.output if args.output is not None else output_file_stem + '-' + get_version(impls[0]) + '.xml'

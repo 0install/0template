@@ -45,10 +45,10 @@ def create(options):
 	print("'{template}' does not exist; creating new template.".format(template = template))
 	if not remote:
 		print("\nAs it ends with .xml, not .xml.template, I assume you want a feed for\n"
-		      "a local project (e.g. a Git checkout). If you want a template for\n"
-		      "publishing existing releases, use {template}.template instead.".format(
-			      template = template))
-	
+			  "a local project (e.g. a Git checkout). If you want a template for\n"
+			  "publishing existing releases, use {template}.template instead.".format(
+				  template = template))
+
 	doc = minidom.parse(os.path.join(mydir, "example.xml"))
 
 	impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
