@@ -32,9 +32,6 @@ def get_choice(msg, options):
 def create(options):
 	template = options.template
 
-	if options.substitutions:
-		die("{template} does not exist".format(template = template))
-
 	if template.endswith('.xml.template'):
 		remote = True
 	elif template.endswith('.xml'):

@@ -42,6 +42,8 @@ args = parser.parse_args()
 template = args.template
 
 if not os.path.exists(template):
+	if args.substitutions:
+		die("{template} does not exist".format(template = template))
 	import create
 	create.create(args)
 	sys.exit(0)
