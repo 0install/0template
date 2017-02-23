@@ -36,6 +36,7 @@ parser = argparse.ArgumentParser(description='Fill in a 0install feed template.'
 parser.add_argument('template', help='the template file to process')
 parser.add_argument('substitutions', metavar='name=value', help='values to insert', nargs='*')
 parser.add_argument('-o', '--output', help='output filename')
+parser.add_argument('--from-feed', help='existing feed to derive template from')
 
 args = parser.parse_args()
 
@@ -47,6 +48,9 @@ if not os.path.exists(template):
 	import create
 	create.create(args)
 	sys.exit(0)
+
+if args.from_feed is not None:
+	die("--from-feed can only be used to create new templates, but '{template}' already exists".format(template = template))
 
 if not template.endswith('.xml.template'):
 	die("Template must be named *.xml.template, not {template}".format(template = template))

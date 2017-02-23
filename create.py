@@ -46,24 +46,31 @@ def create(options):
 			  "publishing existing releases, use {template}.template instead.".format(
 				  template = template))
 
-	doc = minidom.parse(os.path.join(mydir, "example.xml"))
+	if options.from_feed is None:
+		doc = minidom.parse(os.path.join(mydir, "example.xml"))
 
-	impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
-	impls[0].parentNode.removeChild(impls[0] if remote else impls[1])
+		impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
+		impls[0].parentNode.removeChild(impls[0] if remote else impls[1])
 
-	choice = get_choice("Does your program need to be compiled before it can be used?", [
-		(1, "Generate a source template (e.g. for compiling C source code)"),
-		(2, "Generate a binary template (e.g. for a pre-compiled binary or script)"),
-	])
+		choice = get_choice("Does your program need to be compiled before it can be used?", [
+			(1, "Generate a source template (e.g. for compiling C source code)"),
+			(2, "Generate a binary template (e.g. for a pre-compiled binary or script)"),
+		])
 
-	commands = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'command')
-	commands[0].parentNode.removeChild(commands[choice - 1])
+		commands = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'command')
+		commands[0].parentNode.removeChild(commands[choice - 1])
 
-	impl, = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
-	if choice == 1:
-		impl.setAttribute('arch', '*-src')
+		impl, = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
+		if choice == 1:
+			impl.setAttribute('arch', '*-src')
+		else:
+			impl.setAttribute('arch', '*-*')
 	else:
-		impl.setAttribute('arch', '*-*')
+		if remote:
+			import infer
+			doc = infer.from_feed(options.from_feed)
+		else:
+			die("--from-feed can only be used to create new templates, not local feeds".format(template=template))
 
 	assert not os.path.exists(template), template
 	print("\nWriting", template)
