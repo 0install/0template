@@ -74,7 +74,7 @@ class Test0Template(unittest.TestCase):
 		with open("binary-1.0.xml", "rb") as stream:
 			feed = model.ZeroInstallFeed(qdom.parse(stream), local_path = os.path.abspath("."))
 		impl, = feed.implementations.values()
-		self.assertEqual('sha1new=67ba178ed33b292efa5ab364d01a8fc13fe9eba3', impl.id)
+		self.assertEqual('sha1new=1d0cc5025a6de3689c325d10215386e2bf092eb6', impl.id)
 		command, = impl.commands
 		assert command == "run"
 	
@@ -86,7 +86,7 @@ class Test0Template(unittest.TestCase):
 		with open("source-1.0.xml", "rb") as stream:
 			feed = model.ZeroInstallFeed(qdom.parse(stream), local_path = os.path.abspath("."))
 		impl, = feed.implementations.values()
-		self.assertEqual('sha1new=67ba178ed33b292efa5ab364d01a8fc13fe9eba3', impl.id)
+		self.assertEqual('sha1new=1d0cc5025a6de3689c325d10215386e2bf092eb6', impl.id)
 		command, = impl.commands
 		assert command == "compile"
 
@@ -99,7 +99,7 @@ class Test0Template(unittest.TestCase):
 		with open("recipe-1.0.xml", "rb") as stream:
 			feed = model.ZeroInstallFeed(qdom.parse(stream), local_path = os.path.abspath("."))
 		impl, = feed.implementations.values()
-		self.assertEqual('sha1new=07db94eaca7b40bc35cc99e572f9161cfe7fe366', impl.id)
+		self.assertEqual('sha1new=7ba4ce994620191e73a8eba07f57e774c839bbac', impl.id)
 
 
 if __name__ == '__main__':
