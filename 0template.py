@@ -36,15 +36,21 @@ parser = argparse.ArgumentParser(description='Fill in a 0install feed template.'
 parser.add_argument('template', help='the template file to process')
 parser.add_argument('substitutions', metavar='name=value', help='values to insert', nargs='*')
 parser.add_argument('-o', '--output', help='output filename')
+parser.add_argument('--from-feed', help='existing feed to derive template from')
 
 args = parser.parse_args()
 
 template = args.template
 
 if not os.path.exists(template):
+	if args.substitutions:
+		die("{template} does not exist".format(template = template))
 	import create
 	create.create(args)
 	sys.exit(0)
+
+if args.from_feed is not None:
+	die("--from-feed can only be used to create new templates, but '{template}' already exists".format(template = template))
 
 if not template.endswith('.xml.template'):
 	die("Template must be named *.xml.template, not {template}".format(template = template))
@@ -126,11 +132,11 @@ for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, '
 		digest.add_digests(args.template, elem, config)
 
 def get_version(impl):
-    while True:
-        v = impl.getAttribute('version')
-        if v: return v
-        impl = impl.parentNode
-        if not impl or impl.nodeType != Node.ELEMENT_NODE: die("Missing version for implementation")
+	while True:
+		v = impl.getAttribute('version')
+		if v: return v
+		impl = impl.parentNode
+		if not impl or impl.nodeType != Node.ELEMENT_NODE: die("Missing version for implementation")
 
 impls = doc.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation')
 output_file = args.output if args.output is not None else output_file_stem + '-' + get_version(impls[0]) + '.xml'
