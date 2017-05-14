@@ -44,16 +44,6 @@ def process_doc(doc, env):
 			elif child.nodeType == Node.ELEMENT_NODE:
 				process(child)
 
-	def process(elem):
-		for name, value in elem.attributes.items():
-			if '{' in value:
-				elem.attributes[name] = expand(value)
-		for child in elem.childNodes:
-			if child.nodeType == Node.TEXT_NODE:
-				child.data = expand(child.data)
-			elif child.nodeType == Node.ELEMENT_NODE:
-				process(child)
-
 	result = process(doc.documentElement)
 	for x in env:
 		if x not in wrapped_env.used:
