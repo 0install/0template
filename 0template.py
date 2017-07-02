@@ -8,13 +8,7 @@ import argparse
 import os
 import sys
 import string
-import shutil
 import time
-
-if sys.version_info[0] >= 3:
-	from urllib import request
-else:
-	import urllib as request
 
 from zeroinstall import support
 from zeroinstall.injector import namespaces
@@ -25,7 +19,7 @@ def die(msg):
 	sys.exit(1)
 
 import expand
-import unpack
+import retrieval
 import digest
 
 version = '0.4'
@@ -78,58 +72,14 @@ def process_impl(elem):
 		today = time.strftime("%Y-%m-%d")
 		elem.setAttribute("released", today)
 
-def process_archives(parent):
-	for elem in parent.childNodes:
-		if elem.namespaceURI != namespaces.XMLNS_IFACE: continue
-
-		if elem.localName in ('archive', 'file'):
-			# Download the archive if missing
-			href = elem.getAttribute('href')
-			assert href, "missing href on <archive>"
-			local_copy = os.path.join(template_dir, os.path.basename(href))
-			if not os.path.exists(local_copy):
-				print("Downloading {href} to {local_copy}".format(**locals()))
-				req = request.urlopen(href)
-				with open(local_copy + '.part', 'wb') as local_stream:
-					shutil.copyfileobj(req, local_stream)
-				support.portable_rename(local_copy + '.part', local_copy)
-				req.close()
-
-			# Set the size attribute
-			elem.setAttribute('size', str(os.stat(local_copy).st_size))
-
-			if elem.localName == 'archive':
-				if not elem.hasAttribute('extract'):
-					# Unpack (a rather inefficient way to guess the 'extract' attribute)
-					tmpdir = unpack.unpack_to_tmp(href, local_copy, elem.getAttribute('type'))
-					try:
-						unpack_dir = os.path.join(tmpdir, 'unpacked')
-
-						# Set the extract attribute
-						extract = unpack.guess_extract(unpack_dir)
-						if extract:
-							elem.setAttribute('extract', extract)
-							unpack_dir = os.path.join(unpack_dir, extract)
-							assert os.path.isdir(unpack_dir), "Not a directory: {dir}".format(dir = unpack_dir)
-					finally:
-						support.ro_rmtree(tmpdir)
-				else:
-					extract = elem.getAttribute('extract')
-					if extract == "":
-						# Remove empty element
-						elem.removeAttribute('extract')
-
-		elif elem.localName == 'recipe':
-			process_archives(elem)
-
 external_tool = os.environ.get('0TEMPLATE_EXTERNAL_TOOL', '')
 
 # Process implementations
-for elem in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation'):
-	process_impl(elem)
+for impl in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation'):
+	process_impl(impl)
 	if not external_tool:
-		process_archives(elem)
-		digest.add_digests(args.template, elem, config)
+		retrieval.process_elements(impl, template_dir)
+		digest.add_digests(args.template, impl, config)
 
 def get_version(impl):
 	while True:
