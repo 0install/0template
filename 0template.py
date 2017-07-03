@@ -78,7 +78,7 @@ external_tool = os.environ.get('0TEMPLATE_EXTERNAL_TOOL', '')
 for impl in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation'):
 	process_impl(impl)
 	if not external_tool:
-		retrieval.process_elements(impl, template_dir)
+		retrieval.process_elements(impl, impl, template_dir)
 		digest.add_digests(args.template, impl, config)
 
 def get_version(impl):

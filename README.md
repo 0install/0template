@@ -28,6 +28,14 @@ Once you have a template file you can pass in values for variables defined in th
 
 This will cause 0template to create a new file named `my-app-1.0.xml` with any occurences of `{version}` substituted with `1.0` and `<manifest-digest>`s calculated.
 
+You can also let 0template generate an archive from a local directory by adding something like this to your template:
+```xml
+<implementation local-path="directory/to/pack/in/archive">
+  <manifest-digest />
+  <archive href="archive-name.tar.bz2" type="application/x-bzip-compressed-tar" />
+</implementation>
+```
+
 For additional documentation please see: http://0install.net/0template.html
 
 
