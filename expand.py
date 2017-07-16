@@ -1,6 +1,7 @@
 from xml.dom import minidom, Node
 import argparse
 import sys
+import os
 import string
 
 from __main__ import die
@@ -14,8 +15,15 @@ class UsedDict:
 	
 	def __getitem__(self, key):
 		assert key != 'foo'
-		self.used.add(key)
-		return self.underlying[key]
+		if key in self.underlying:
+			self.used.add(key)
+			return self.underlying[key]
+		else:
+			value = os.getenv(key)
+			if value is None:
+				die("Missing value for '{key}'".format(key = key))
+			else:
+				return value
 
 	def keys(self):
 		return self.underlying.keys()
@@ -28,11 +36,7 @@ def process_doc(doc, env):
 
 	# Expand the template strings with the command-line arguments
 	def expand(template_string):
-		try:
-			return formatter.vformat(template_string, [], wrapped_env)
-		except KeyError as ex:
-			die("Missing value for {name} in '{template}'".format(
-				name = str(ex), template = template_string))
+		return formatter.vformat(template_string, [], wrapped_env)	
 
 	def process(elem):
 		for name, value in elem.attributes.items():
