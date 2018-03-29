@@ -9,6 +9,7 @@
     it will download the archive, fill in the size, calculate the digests, etc.
   </description>
   <homepage>http://0install.net/0template.html</homepage>
+  <needs-terminal/>
 
   <release:management xmlns:release="http://zero-install.sourceforge.net/2007/namespaces/0release">
     <!-- Update the copy of the version number in the code -->
@@ -42,4 +43,6 @@
 
     <implementation id="." version="0.5-post"/>
   </group>
+
+  <entry-point binary-name="0template" command="run"/>
 </interface>
