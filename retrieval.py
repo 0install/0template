@@ -40,7 +40,7 @@ def process_archive(elem, impl, template_dir):
 		impl.removeAttribute('local-path')
 	else:
 		if not os.path.exists(local_copy):
-			download(href, template_dir)
+			download(href, local_copy)
 		if not elem.hasAttribute('extract'):
 			# Unpack (a rather inefficient way to guess the 'extract' attribute)
 			tmpdir = unpack_to_tmp(href, local_copy, mime_type)
