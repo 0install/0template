@@ -8,7 +8,7 @@
     fills in the place-holders, and then fills in everything else it can. For example,
     it will download the archive, fill in the size, calculate the digests, etc.
   </description>
-  <homepage>http://0install.net/0template.html</homepage>
+  <homepage>https://docs.0install.net/tools/0template/</homepage>
   <needs-terminal/>
 
   <release:management xmlns:release="http://zero-install.sourceforge.net/2007/namespaces/0release">
@@ -20,15 +20,15 @@
 
   <group license="OSI Approved :: GNU Lesser General Public License (LGPL)">
     <command name="run" path="0template.py">
-      <runner interface="http://repo.roscidus.com/python/python"/>
+      <runner interface="https://apps.0install.net/python/python.xml"/>
     </command>
 
     <command name="test" path="tests/test0template.py">
-      <runner interface="http://repo.roscidus.com/python/python"/>
+      <runner interface="https://apps.0install.net/python/python.xml"/>
       <executable-in-path name="0template"/>
     </command>
 
-    <requires interface="http://repo.roscidus.com/python/python">
+    <requires interface="https://apps.0install.net/python/python.xml">
       <version not-before="2.7"/>
     </requires>
 
