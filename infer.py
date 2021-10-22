@@ -33,7 +33,7 @@ def _remove_digests_and_sizes(doc):
             if child.localName == 'manifest-digest':
                 to_remove.append(child)
             elif child.localName == 'implementation':
-                if child.hasAttribute('id') and '=' in child.getAttribute('id'):
+                if child.hasAttribute('id') and not child.getAttribute('id').startswith('.') and not child.getAttribute('id').startswith('/'):
                     child.removeAttribute('id')
             elif child.localName == 'archive' or child.localName == 'file':
                 if child.hasAttribute('size'):
