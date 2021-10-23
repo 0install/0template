@@ -36,7 +36,7 @@
       <executable-in-var command="0publish" name="0TEMPLATE_EXTERNAL_TOOL"/>
     </requires>
 
-    <implementation id="." version="0.7" released="2021-10-23"/>
+    <implementation id="." version="0.7-post"/>
   </group>
 
   <entry-point binary-name="0template" command="run"/>
