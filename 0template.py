@@ -22,7 +22,7 @@ import expand
 import retrieval
 import digest
 
-version = '0.7'
+version = '0.8'
 
 config = load_config()
 
