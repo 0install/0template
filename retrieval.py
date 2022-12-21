@@ -97,7 +97,7 @@ def build_archive(to_pack, archive_file, mime_type):
 		elif mime_type == "application/x-lzma-compressed-tar":
 			return ['tar', 'cf', archive_file, '--lzma'] + os.listdir('.')
 		elif mime_type == "application/x-zstd-compressed-tar":
-			return ['tar', 'cf', archive_file, '--use-compress-program=zstd'] + os.listdir('.')
+			return ['tar', 'cf', archive_file, '--use-compress-program', 'zstd -19'] + os.listdir('.')
 		else:
 			print("Creating archives with MIME type {mime_type} is not supported".format(mime_type = mime_type), file=sys.stderr)
 			sys.exit(1)
