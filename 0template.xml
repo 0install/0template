@@ -16,7 +16,7 @@
     <release:action phase="commit-release">sed -i &quot;s/^version = '.*'$/version = '$RELEASE_VERSION'/&quot; 0template.py</release:action>
   </release:management>
 
-  <feed-for interface="https://apps.0install.net/0install//0template.xml"/>
+  <feed-for interface="https://apps.0install.net/0install/0template.xml"/>
 
   <group license="OSI Approved :: GNU Lesser General Public License (LGPL)">
     <command name="run" path="0template.py">
