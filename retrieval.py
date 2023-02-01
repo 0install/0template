@@ -83,21 +83,24 @@ def download(href, local_copy):
 	req.close()
 
 def build_archive(to_pack, archive_file, mime_type):
+	def tar_command(archive_file, compress):
+		return ['tar', '-c'] + compress + ['--exclude-vcs', '--exclude', '__pycache__', '--exclude', '.DS_Store', '-f', archive_file] + os.listdir('.')
+
 	def pack_command(archive_file):
 		if mime_type == "application/zip":
-			return ['zip', '-qr', archive_file, '.']
+			return ['zip', '-q', '-r', archive_file, '.', '-x', '.git/*', '__pycache__/*', '.DS_Store']
 		elif mime_type == "application/x-tar":
-			return ['tar', 'cf', archive_file] + os.listdir('.')
+			return tar_command(archive_file, [])
 		elif mime_type == "application/x-compressed-tar":
-			return ['tar', 'czf', archive_file] + os.listdir('.')
+			return tar_command(archive_file, ['-z'])
 		elif mime_type == "application/x-bzip-compressed-tar":
-			return ['tar', 'cjf', archive_file] + os.listdir('.')
+			return tar_command(archive_file, ['-j'])
 		elif mime_type == "application/x-xz-compressed-tar":
-			return ['tar', 'cxf', archive_file] + os.listdir('.')
+			return tar_command(archive_file, ['-x'])
 		elif mime_type == "application/x-lzma-compressed-tar":
-			return ['tar', 'cf', archive_file, '--lzma'] + os.listdir('.')
+			return tar_command(archive_file, ['--use-compress-program', 'lzma'])
 		elif mime_type == "application/x-zstd-compressed-tar":
-			return ['tar', 'cf', archive_file, '--use-compress-program', os.path.join(os.path.dirname(__file__), 'zstd19')] + os.listdir('.')
+			return tar_command(archive_file, ['--use-compress-program', os.path.join(os.path.dirname(__file__), 'zstd19')])
 		else:
 			print("Creating archives with MIME type {mime_type} is not supported".format(mime_type = mime_type), file=sys.stderr)
 			sys.exit(1)
