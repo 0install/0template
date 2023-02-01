@@ -99,6 +99,8 @@ def build_archive(to_pack, archive_file, mime_type):
 			return tar_command(archive_file, ['-x'])
 		elif mime_type == "application/x-lzma-compressed-tar":
 			return tar_command(archive_file, ['--use-compress-program', 'lzma'])
+		elif mime_type == "application/x-xz-compressed-tar":
+			return tar_command(archive_file, ['--use-compress-program', 'xz'])
 		elif mime_type == "application/x-zstd-compressed-tar":
 			return tar_command(archive_file, ['--use-compress-program', os.path.join(os.path.dirname(__file__), 'zstd19')])
 		else:
