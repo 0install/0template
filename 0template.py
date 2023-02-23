@@ -22,7 +22,7 @@ import expand
 import retrieval
 import digest
 
-version = '0.9'
+version = 'git-checkout'
 
 config = load_config()
 
