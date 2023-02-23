@@ -1,7 +1,0 @@
-language: c
-dist: trusty
-sudo: required
-services:
-  - docker
-script:
-  - docker run --rm -it -v $(pwd):/mnt talex5/0install 0test /mnt/0template.xml
