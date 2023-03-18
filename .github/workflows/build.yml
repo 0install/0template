@@ -18,10 +18,10 @@ jobs:
       # Build
       - name: Inject version number
         run: sed -i "s/^version = '.*'$/version = '${{steps.gitversion.outputs.legacySemVer}}'/" 0template.py
-      - name: 0test
-        run: ./0install.sh run https://apps.0install.net/0install/0test.xml 0template.xml
       - name: 0template
         run: ./0install.sh run https://apps.0install.net/0install/0template.xml 0template.xml.template version=${{steps.gitversion.outputs.legacySemVer}}
+      - name: 0test
+        run: ./0install.sh run https://apps.0install.net/0install/0test.xml 0template-${{steps.gitversion.outputs.legacySemVer}}.xml
 
       # Release
       - name: Create GitHub Release
