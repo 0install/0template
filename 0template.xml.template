@@ -27,8 +27,8 @@
       <environment insert="" mode="prepend" name="PYTHONPATH"/>
     </requires>
 
-    <requires interface="https://apps.0install.net/0install/0publish-win.xml" os="Windows">
-      <executable-in-var command="0publish" name="0TEMPLATE_EXTERNAL_TOOL"/>
+    <requires interface="https://apps.0install.net/0install/0publish-dotnet.xml" os="Windows">
+      <executable-in-var name="0TEMPLATE_EXTERNAL_TOOL"/>
     </requires>
 
     <implementation version="{version}" local-path=".">
