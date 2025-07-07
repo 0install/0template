@@ -8,11 +8,11 @@ Introduction
 ------------
 
 0template is a tool for creating [Zero Install](http://0install.net/) feeds from template files.
-It is mainly used to add new releases to feeds managed by [0repo](http://0install.net/0repo.html).
+It is mainly used to add new releases to feeds managed by [0repo](https://docs.0install.net/tools/0repo/).
 
 To make the `0template` command available on your command-line you can run:
 
-    0install add 0template http://0install.net/tools/0template.xml
+    0install add https://apps.0install.net/0install/0template.xml
 
 To create a new template file you can then use a command like the following:
 
@@ -40,7 +40,7 @@ You can let 0template generate an archive from a local directory by adding somet
 </implementation>
 ```
 
-For additional documentation please see: http://0install.net/0template.html
+For additional documentation please see: https://docs.0install.net/tools/0template/
 
 
 Conditions
