@@ -33,7 +33,7 @@
 
     <implementation version="{version}" local-path=".">
       <manifest-digest/>
-      <archive href="0watch-{version}.tar.bz2"/>
+      <archive href="0template-{version}.tar.bz2"/>
     </implementation>
   </group>
 </interface>
