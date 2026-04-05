@@ -101,6 +101,21 @@ class Test0Template(unittest.TestCase):
 		impl, = feed.implementations.values()
 		self.assertEqual('sha1new=7ba4ce994620191e73a8eba07f57e774c839bbac', impl.id)
 
+	def testForceDownload(self):
+		test_create("binary.xml.template", "2\n")
+		shutil.copyfile(os.path.join(mydir, "myprog-1.0.zip"), "myprog-1.0.zip")
+		# Run once without --force-download so the local copy already exists; no download expected
+		first_out = subprocess.check_output(["0template", "binary.xml.template", "version=1.0"], universal_newlines = True)
+		self.assertNotIn("Downloading", first_out)
+		# Run again with --force-download; the local file exists but a download should be attempted
+		# (the download itself will fail because http_proxy points to a non-existent server,
+		# but the "Downloading ..." line is printed before the network request)
+		proc = subprocess.Popen(
+			["0template", "--force-download", "binary.xml.template", "version=1.0"],
+			stdout=subprocess.PIPE, stderr=subprocess.STDOUT, universal_newlines=True)
+		out, _ = proc.communicate()
+		self.assertIn("Downloading", out)
+
 
 if __name__ == '__main__':
 	unittest.main()

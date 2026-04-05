@@ -14,18 +14,18 @@ from zeroinstall import support
 from zeroinstall.injector import namespaces
 from zeroinstall.zerostore import unpack, manifest
 
-def process_elements(parent, impl, template_dir):
+def process_elements(parent, impl, template_dir, force_download):
 	for elem in parent.childNodes:
 		if elem.namespaceURI != namespaces.XMLNS_IFACE: continue
 
 		if elem.localName == 'archive':
-			process_archive(elem, impl, template_dir)
+			process_archive(elem, impl, template_dir, force_download)
 		elif elem.localName == 'file':
 			process_file(elem, template_dir)
 		elif elem.localName == 'recipe':
-			process_elements(elem, impl, template_dir)
+			process_elements(elem, impl, template_dir, force_download)
 
-def process_archive(elem, impl, template_dir):
+def process_archive(elem, impl, template_dir, force_download):
 	href = elem.getAttribute('href')
 	assert href, "missing href on <archive>"
 
@@ -39,7 +39,7 @@ def process_archive(elem, impl, template_dir):
 		build_archive(os.path.join(template_dir, impl.getAttribute('local-path')), local_copy, mime_type)
 		impl.removeAttribute('local-path')
 	else:
-		if not os.path.exists(local_copy):
+		if force_download or not os.path.exists(local_copy):
 			download(href, local_copy)
 		if not elem.hasAttribute('extract'):
 			# Unpack (a rather inefficient way to guess the 'extract' attribute)

@@ -31,6 +31,7 @@ parser.add_argument('template', help='the template file to process')
 parser.add_argument('substitutions', metavar='name=value', help='values to insert', nargs='*')
 parser.add_argument('-o', '--output', help='output filename')
 parser.add_argument('--from-feed', help='existing feed to derive template from')
+parser.add_argument('--force-download', action='store_true', help='always download referenced files, even if a local copy already exists')
 
 args = parser.parse_args()
 
@@ -78,7 +79,7 @@ external_tool = os.environ.get('0TEMPLATE_EXTERNAL_TOOL', '')
 for impl in doc.documentElement.getElementsByTagNameNS(namespaces.XMLNS_IFACE, 'implementation'):
 	process_impl(impl)
 	if not external_tool:
-		retrieval.process_elements(impl, impl, template_dir)
+		retrieval.process_elements(impl, impl, template_dir, args.force_download)
 		digest.add_digests(args.template, impl, config)
 
 def get_version(impl):
