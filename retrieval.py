@@ -21,7 +21,7 @@ def process_elements(parent, impl, template_dir, force_download):
 		if elem.localName == 'archive':
 			process_archive(elem, impl, template_dir, force_download)
 		elif elem.localName == 'file':
-			process_file(elem, template_dir)
+			process_file(elem, template_dir, force_download)
 		elif elem.localName == 'recipe':
 			process_elements(elem, impl, template_dir, force_download)
 
@@ -64,11 +64,11 @@ def process_archive(elem, impl, template_dir, force_download):
 	# Set the size attribute
 	elem.setAttribute('size', str(os.stat(local_copy).st_size))
 
-def process_file(elem, template_dir):
+def process_file(elem, template_dir, force_download):
 	href = elem.getAttribute('href')
 	assert href, "missing href on <file>"
 	local_copy = os.path.join(template_dir, os.path.basename(href))
-	if not os.path.exists(local_copy):
+	if force_download or not os.path.exists(local_copy):
 		download(href, local_copy)
 
 	# Set the size attribute
